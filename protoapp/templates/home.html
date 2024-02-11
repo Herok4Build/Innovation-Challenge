@@ -1,23 +1,25 @@
 <!DOCTYPE html>
     <form name = "login" action="{{url_for("login")}}" method="post">
         <!--User inputs their email and their password within the form-->
-        <input type = "text" name="useremail" placeholder="name@aggies.ncat.edu">
-        <input type = "text" name="userpass" placeholder="*********">
+        <label for="useremail">"Email:"</label>
+        <input type = "text" name="useremail" placeholder="name@aggies.ncat.edu"> <br>
+        <label for="userpass">"Password:"</label>
+        <input type = "text" name="userpass" placeholder="*********"><br>
         <input type="submit">
     </input>
     </form>
     
 <form name = "register">
-    <label for="firstname"> "First name:" </label>
-  <input type = "text" name = "firstname">
+    <label for="firstname"> "First name:" </label> 
+  <input type = "text" name = "firstname"> <br>
   <label for="lastname">"Last name:"</label>
-  <input type = "text" name = "lastname">
+  <input type = "text" name = "lastname"><br>
   <label for="email">"Email:"</label>
-  <input type = "text" name = "email">
+  <input type = "text" name = "email"><br>
   <label for="bannerid">"Banner ID:"</label>
-  <input type = "text" name = "bannerid">
+  <input type = "text" name = "bannerid"><br>
   <label for="password">"Password:"</label>
-  <input type = "text" name = "password">
+  <input type = "text" name = "password"><br>
 </form>
 
 </html>
