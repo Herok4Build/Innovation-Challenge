@@ -28,11 +28,26 @@ def start_student_db(db_conn = db_extend):
     else:
         # propogate the Users within the table
 
-class Users(db_conn.Model):
-    banner_id = db_conn.Column(db_conn.Integer, primary_key = True)
-    username = db.Column(db.String, unique = TRUE, nullable = False)
-    email = db.Column(db.String)
-    status = db.Column(db.String)
+class Users(db_extend.Model):
+    # Banner ID
+    banner_id = db_extend.Column(db_extend.Integer, primary_key = True)
+    # Username
+    username = db_extend.Column(db_extend.String, unique = TRUE, nullable = False)
+    # firstname
+    fname = db_extend.Column(db_extend.String)
+    # Last name
+    lname = db_extend.Column(db_extend.String)
+    # Email
+    email = db_extend.Column(db_extend.String)
+    # Status
+    status = db_extend.Column(db_extend.String)
+
+class Students(db_extend.Model):
+    banner_id = db_extend.Column(db_extend.Integer, primary_key = True)
+    # firstname
+    fname = db_extend.Column(db_extend.String)
+    # Last name
+    lname = db_extend.Column(db_extend.String)
 
 # Start up database extension
 db_extend = SQLAlchemy()
