@@ -24,7 +24,7 @@
             <label for="email">"Email:"</label>
             <input type = "text" name = "email"><br>
             <label for="bannerid">"Banner ID:"</label>
-            <input type = "text" name = "bannerid"><br>
+            <input type = "number" name = "bannerid"><br>
             <label for="password">"Password:"</label>
             <input type = "text" name = "password"><br>
             <label for="confpass">"Confirm Password:"</label>
@@ -34,7 +34,18 @@
                 <option value = "student">"Student"</option>
                 <option value = "advisor">"Advisor"</option>
                 <option value = "chair/director">"Chair/Director"</option>
-            </select>
+            </select><br>
+            <!--Student only--->
+            <label for="department">"Department"</label>
+            <input type = "text" name = "department"><br>
+            <label for="course_program">"Course/Program"</label>
+            <input type = "text" name = "course_program"><br>
+            <label for="advisor_name">"Advisor's name"</label>
+            <input type = "text" name = "advisor_name"><br>
+            <!--Advisor or Department Chair only--->
+            <label for="depart_area">"Department/Area of Concentration"</label>
+            <input type = "text" name = "depart_area"><br>
+            <input type = "submit" value = "Register!!">
             </form>
         </div>
     </div>
