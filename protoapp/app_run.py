@@ -24,9 +24,10 @@ def start_student_db(db_conn = db_extend):
     user_table_bool = db_inspector.has_table("users")
     if user_table_bool == False:
         exit()
-        # Create the Users table
+        # Need to reate the Users table
     else:
         # propogate the Users within the table
+
 
 class Users(db_extend.Model):
     # Banner ID
