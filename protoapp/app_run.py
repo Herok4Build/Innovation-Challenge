@@ -1,21 +1,35 @@
 from flask import Flask, request
 from flask import render_template
-from flask_sqlalchemy import SQLAlchemy, inspect
+import firebase_admin
 import os
+
+default_app = firebase_admin.initialize_app()
 
 # Activate Flask app
 app = Flask(__name__)
 # Extending code from Quickstart guide
 # Reference: https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/quickstart/
+
 def initiate_db_path(path = None):
     # Set up path for database
     if path == None:
         path = "./db/"
         if os.path.isdir(path) == False:
             os.mkdir(path)
-    path = path + "sqlite:///guide.db"
+    path = path + "sqlite://guide.db"
 
-def start_student_db(db_conn = db_extend):
+
+# Start up database extension
+db_extend = SQLAlchemy()
+# Get path for database
+db_path = initiate_db_path()
+# Initial configuration of database
+app.config["SQLALCHEMY_DATABASE_URI"] = db_path
+# Initiate application with database
+db_extend.init_app(app)
+
+
+def start_student_db(db_conn):
     # Check if table exists
     # Reference: https://copyprogramming.com/howto/easily-check-if-table-exists-with-python-sqlalchemy-on-an-sql-database#flask-sqlalchemy-check-if-table-exists-in-database
     # Check solution 3 for Flask-SQLAlchemy
@@ -27,6 +41,10 @@ def start_student_db(db_conn = db_extend):
         # Need to reate the Users table
     else:
         # propogate the Users within the table
+        user_1 = Users(banner_id = 123245321, username = "CassJ", fname = "Cassandra", lname = "Lauryn",
+        email = "cassandra@aggies.ncet.edu", status = "student")
+        user_3 = Users(banner_id = 123245323, username = "JamesK", fname = "Jameson", lname = "Kart",
+        email = "jkart@aggies.ncat.edu", status = "student")
 
 
 class Users(db_extend.Model):
@@ -57,8 +75,8 @@ class Users(db_extend.Model):
     '''
 
 class Students(db_extend.Model):
-    banner_id = db_extend.Column(db_extend.Integer, primary_key = True,
-                                db.ForeignKey("banner_id"))
+    banner_id = db_extend.Column(db_extend.Integer,db.ForeignKey("banner_id"), 
+    primary_key = True,)
     # firstname
     fname = db_extend.Column(db_extend.String)
     # Last name
@@ -71,8 +89,8 @@ class Students(db_extend.Model):
     advisorname = db_extend.Column(db_extend.String)
 
 class advisorChair(db_extend.Model):
-    banner_id = db_extend.Column(db_extend.Integer, primary_key = True,
-                                db.ForeignKey("banner_id"))
+    banner_id = db_extend.Column(db_extend.Integer, db.ForeignKey("banner_id"),
+                                primary_key = True)
     # firstname
     fname = db_extend.Column(db_extend.String)
     # Last name
@@ -80,15 +98,8 @@ class advisorChair(db_extend.Model):
     # Department area Concentration
     depart_concen = db_extend.Column(db_extend.String)
 
-# Start up database extension
-db_extend = SQLAlchemy()
-# Get path for database
-db_path = initiate_db_path()
-# Initial configuration of database
-app.config["SQLALCHEMY_DATABASE_URI"] = db_path
-# Initiate application with database
-db_extend.init_app(app)
 
+start_student_db(db_conn = db_extend)
 
 
 @app.route("/")
