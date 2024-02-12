@@ -41,13 +41,43 @@ class Users(db_extend.Model):
     email = db_extend.Column(db_extend.String)
     # Status
     status = db_extend.Column(db_extend.String)
+    '''
+    # Start here for separating student table
+    # Course/Program
+    course = db_extend.Column(db_extend.String)
+    # Department
+    department = db_extend.Column(db_extend.String)
+    # Advisor's name
+    advisorname = db_extend.Column(db_extend.String)
+    # End separate for student table
+    # Start here fro separating department chair and advisor table
+    # Department area Concentration
+    depart_concen = db_extend.Column(db_extend.String)
+    '''
 
 class Students(db_extend.Model):
-    banner_id = db_extend.Column(db_extend.Integer, primary_key = True)
+    banner_id = db_extend.Column(db_extend.Integer, primary_key = True,
+                                db.ForeignKey("banner_id"))
     # firstname
     fname = db_extend.Column(db_extend.String)
     # Last name
     lname = db_extend.Column(db_extend.String)
+    # Course/Program
+    course = db_extend.Column(db_extend.String)
+    # Department
+    department = db_extend.Column(db_extend.String)
+    # Advisor's name
+    advisorname = db_extend.Column(db_extend.String)
+
+class advisorChair(db_extend.Model):
+    banner_id = db_extend.Column(db_extend.Integer, primary_key = True,
+                                db.ForeignKey("banner_id"))
+    # firstname
+    fname = db_extend.Column(db_extend.String)
+    # Last name
+    lname = db_extend.Column(db_extend.String)
+    # Department area Concentration
+    depart_concen = db_extend.Column(db_extend.String)
 
 # Start up database extension
 db_extend = SQLAlchemy()
