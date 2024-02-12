@@ -27,6 +27,10 @@ def start_student_db(db_conn = db_extend):
         # Need to reate the Users table
     else:
         # propogate the Users within the table
+        user_1 = Users(banner_id = 123245321, username = "CassJ", fname = "Cassandra", lname = "Lauryn",
+        email = "cassandra@aggies.ncet.edu", status = "student")
+        user_3 = Users(banner_id = 123245323, username = "JamesK", fname = "Jameson", lname = "Kart",
+        email = "jkart@aggies.ncat.edu", status = "student")
 
 
 class Users(db_extend.Model):
@@ -57,8 +61,8 @@ class Users(db_extend.Model):
     '''
 
 class Students(db_extend.Model):
-    banner_id = db_extend.Column(db_extend.Integer, primary_key = True,
-                                db.ForeignKey("banner_id"))
+    banner_id = db_extend.Column(db_extend.Integer,db.ForeignKey("banner_id"), 
+    primary_key = True,)
     # firstname
     fname = db_extend.Column(db_extend.String)
     # Last name
@@ -71,8 +75,8 @@ class Students(db_extend.Model):
     advisorname = db_extend.Column(db_extend.String)
 
 class advisorChair(db_extend.Model):
-    banner_id = db_extend.Column(db_extend.Integer, primary_key = True,
-                                db.ForeignKey("banner_id"))
+    banner_id = db_extend.Column(db_extend.Integer, db.ForeignKey("banner_id"),
+                                primary_key = True)
     # firstname
     fname = db_extend.Column(db_extend.String)
     # Last name
@@ -89,6 +93,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = db_path
 # Initiate application with database
 db_extend.init_app(app)
 
+start_student_db()
 
 
 @app.route("/")
