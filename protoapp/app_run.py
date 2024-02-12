@@ -1,9 +1,19 @@
 from flask import Flask, request
 from flask import render_template
-import firebase_admin
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import inspect
+from sqlalchemy.orm import DeclarativeBase
 import os
 
-default_app = firebase_admin.initialize_app()
+
+
+class Base(DeclarativeBase):
+    pass
+
+class Base(DeclarativeBase):
+      pass
+
+db_extend = SQLAlchemy(model_class=Base)
 
 # Activate Flask app
 app = Flask(__name__)
@@ -16,42 +26,34 @@ def initiate_db_path(path = None):
         path = "./db/"
         if os.path.isdir(path) == False:
             os.mkdir(path)
-    path = path + "sqlite://guide.db"
+    path = path + "sqlite:///guide.db"
 
 
 # Start up database extension
-db_extend = SQLAlchemy()
+#db_extend = SQLAlchemy()
 # Get path for database
 db_path = initiate_db_path()
 # Initial configuration of database
-app.config["SQLALCHEMY_DATABASE_URI"] = db_path
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///guide.db"
 # Initiate application with database
+
 db_extend.init_app(app)
 
 
 def start_student_db(db_conn):
-    # Check if table exists
-    # Reference: https://copyprogramming.com/howto/easily-check-if-table-exists-with-python-sqlalchemy-on-an-sql-database#flask-sqlalchemy-check-if-table-exists-in-database
-    # Check solution 3 for Flask-SQLAlchemy
-    db_inspector = inspector(db_conn)
-    # Checking if Users table already exists
-    user_table_bool = db_inspector.has_table("users")
-    if user_table_bool == False:
-        exit()
-        # Need to reate the Users table
-    else:
-        # propogate the Users within the table
-        user_1 = Users(banner_id = 123245321, username = "CassJ", fname = "Cassandra", lname = "Lauryn",
-        email = "cassandra@aggies.ncet.edu", status = "student")
-        user_3 = Users(banner_id = 123245323, username = "JamesK", fname = "Jameson", lname = "Kart",
-        email = "jkart@aggies.ncat.edu", status = "student")
+    # propogate the Users within the table
+    user_1 = Users(banner_id = 123245321, username = "CassJ", fname = "Cassandra", lname = "Lauryn",
+    email = "cassandra@aggies.ncet.edu", status = "student")
+    user_3 = Users(banner_id = 123245323, username = "JamesK", fname = "Jameson", lname = "Kart",
+     email = "jkart@aggies.ncat.edu", status = "student")
 
 
 class Users(db_extend.Model):
     # Banner ID
-    banner_id = db_extend.Column(db_extend.Integer, primary_key = True)
+    banner_id = db_extend.Column(db_extend.Integer, 
+    primary_key = True)
     # Username
-    username = db_extend.Column(db_extend.String, unique = TRUE, nullable = False)
+    username = db_extend.Column(db_extend.String, unique = True, nullable = False)
     # firstname
     fname = db_extend.Column(db_extend.String)
     # Last name
@@ -60,6 +62,9 @@ class Users(db_extend.Model):
     email = db_extend.Column(db_extend.String)
     # Status
     status = db_extend.Column(db_extend.String)
+    # Student data
+    student_info = db_extend.relationship("Students", backref = "Users",
+    uselist = False)
     '''
     # Start here for separating student table
     # Course/Program
@@ -75,8 +80,9 @@ class Users(db_extend.Model):
     '''
 
 class Students(db_extend.Model):
-    banner_id = db_extend.Column(db_extend.Integer,db.ForeignKey("banner_id"), 
-    primary_key = True,)
+    banner_id = db_extend.Column(db_extend.Integer, db_extend.ForeignKey("users.banner_id"),
+    primary_key = True)
+    db_extend.relationship("Users")
     # firstname
     fname = db_extend.Column(db_extend.String)
     # Last name
@@ -89,7 +95,7 @@ class Students(db_extend.Model):
     advisorname = db_extend.Column(db_extend.String)
 
 class advisorChair(db_extend.Model):
-    banner_id = db_extend.Column(db_extend.Integer, db.ForeignKey("banner_id"),
+    banner_id = db_extend.Column(db_extend.Integer,
                                 primary_key = True)
     # firstname
     fname = db_extend.Column(db_extend.String)
@@ -98,6 +104,8 @@ class advisorChair(db_extend.Model):
     # Department area Concentration
     depart_concen = db_extend.Column(db_extend.String)
 
+with app.app_context():
+    db_extend.create_all()
 
 start_student_db(db_conn = db_extend)
 
