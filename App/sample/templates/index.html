@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <a class="navbar-brand" href="#">Hidden brand</a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+            </form>
+          </div>
+        </div>
+      </nav>
+<div id="fform">
+      <div class="container">
+        <div class="forms-container">
+            <div class="register">
+                <div id="form1">
+                <form action="{{ url_for('login') }}"  method="POST" class="registerform">
+                    <h2 class="title" style="color: #ff5733; font-size: 24px;">Welcome, <span id="namess">Aggie</span>!!</h2>
+                    <h4 style="text-indent: 20px; text-decoration: underline; letter-spacing: 1px; color: #008080; font-weight: bold;">Please fill out the form to continue:</h4><br>
+                    
+                        <!-- <div class="input-field">
+                            <i class="fas fa-comment"></i>
+                            <input type="tel" placeholder="My Full Name" id="toSee">
+                        </div> -->
+                        <!-- <div class="input-field">
+                            <i class="fas fa-home"></i>
+                            <input type="text" placeholder="Department" id="address">
+                        </div> -->
+                        <div class="form-floating" id="stats">
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"  style="border-radius: 100px; width: 380px;height:2px; text-align: left; ">
+                              <option selected style="text-align: center;">Status</option>
+                              <option value="1" style="text-align: center;">Student</option>
+                              <option value="2" style="text-align: center;" id="adv">Advisor</option>
+                              <option value="3" style="text-align: center;" id="dir">Director</option>
+                            </select>
+                           
+                          </div>
+                        <!-- <input type="button" style="background-color: #2b2b6d;" value="Proceed" class="btn solid"> -->
+                        <div class="row" style="display: none;" id="logbtn">
+                          <div>
+                            <!-- Form Inputs -->
+                            <div class="mb-3">
+                              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Your Student Email">
+                            </div>
+                            <div class="mb-3">
+                              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Your Password">
+                            </div>
+                            <div class="mb-3 form-check">
+                              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                              <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <!-- Buttons -->
+                            <div style="display: flex;">
+                              <div>
+                                <button type="submit" style="background-color: #2b2b6d;" class="btn solid" name="sb" value="loginBtn">Login</button>
+                              </div>
+                            </form>
+                            <form action="{{ url_for('register') }}"  method="POST" class="registerform1">
+                              <div style="margin-left: 10px;"> <!-- Adjust margin as needed -->
+                                <button type="submit" style="background-color: #2b2b6d;" class="btn solid" name="sb" value="newuser">New User</button>
+                              </div>
+                            </form>
+                              
+                            </div>
+                          </div>
+                        </div>
+                
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="panel-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <img src="/static/image/img2.png" style="width: 200px; height: 200px;" />
+                        </div>
+                </h2>
+            </div>
+        </div>
+    </div>  
+
+</body>
+<script>
+var selectElement = document.getElementById("floatingSelect");
+selectElement.addEventListener("change", function() {
+  var selectedValue = selectElement.value;
+  if (selectedValue === '1') {
+    logbtn.style.display="block";
+    stats.style.display="none"; 
+  } else {
+    " There is an error"
+  }
+});
+</script>
+</html>

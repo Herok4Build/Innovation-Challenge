@@ -6,11 +6,14 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import String
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import MetaData
+from sqlalchemy import MetaData
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy import inspect
 from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 import os
 
 from sqlalchemy import create_engine
@@ -50,20 +53,23 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///guide.db"
 # db_extend.init_app(app)
 
 
-def start_student_db(db_conn,app):
-    with app.app_context():
+def start_student_db(db_conn):
+    with Session(db_conn) as session:
         # propogate the Users within the table
         user_1 = Users(banner_id = 123245321, username = "CassJ", fname = "Cassandra", lname = "Lauryn",
          email = "cassandra@aggies.ncet.edu", status = "student")
         user_2 = Users(banner_id = 123245323, username = "JamesK", fname = "Jameson", lname = "Kart",
          email = "jkart@aggies.ncat.edu", status = "student")
-        db_conn.session.add(user_1)
-        db_conn.session.add(user_2)
-        db_conn.session.commit()
+        session.add_all([user_1, user_2])
+        session.commit()
+        session.delete(user_1)
+        session.commit()
+
 
 # Reference:https://stackoverflow.com/questions/24475645/sqlalchemy-one-to-one-relation-primary-as-foreign-key
 # Reference: https://docs.sqlalchemy.org/en/20/orm/quickstart.html (02-12-2024)
-class Users(db_extend.Model):
+class Users(Base):
+    __tablename__ = "Users"
     # Banner ID
     banner_id: Mapped[int] = mapped_column(primary_key=True)
     # Username
@@ -77,7 +83,7 @@ class Users(db_extend.Model):
     # Status
     status: Mapped[str] = mapped_column(String(20))
     # Student data
-    student_info: Mapped[List["Student"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    student_info: Mapped["Students"] = relationship(back_populates="user_info", cascade="all, delete-orphan")
     '''
     # Start here for separating student table
     # Course/Program
@@ -92,40 +98,46 @@ class Users(db_extend.Model):
     depart_concen = db_extend.Column(db_extend.String)
     '''
     def __repr__(self) -> str:
-        return f"Users({banner_id = {self.id!r}, fname =self.fname!r})"
+        return f"Users(banner_id = {self.id!r}, fname ={self.fname!r})"
 
-class Students(db_extend.Model):
+class Students(Base):
+    __tablename__ = "Students"
+    banner_id: Mapped[int] = mapped_column(ForeignKey("Users.banner_id"),
+    primary_key = True)
+
+    user_info: Mapped["Users"] = relationship(back_populates="student_info")
+    # firstname
+    fname: Mapped[str]= mapped_column(String(40))
+    # Last name
+    lname: Mapped[str]= mapped_column(String(40))
+    # Course/Program
+    course: Mapped[str]= mapped_column(String(40))
+    # Department
+    department: Mapped[str]= mapped_column(String(40))
+    # Advisor's name
+    advisorname: Mapped[str]= mapped_column(String(90))
+    
+    def __repr__(self) -> str:
+        return f"Students(banner_id = {self.id!r}, fname ={self.fname!r})"
+"""
+class advisorChair(Base):
+    __tablename__ = "advisorChair"
     banner_id: Mapped[int] = mapped_column(ForeignKey("users.banner_id"),
     primary_key = True)
     # firstname
-    fname = Mapped[str]: mapped_column(String(40))
+    fname: Mapped[str]= mapped_column(String(40))
     # Last name
-    lname = Mapped[str]: mapped_column(String(40))
-    # Course/Program
-    course = Mapped[str]: mapped_column(String(40))
-    # Department
-    department = Mapped[str]: mapped_column(String(40))
-    # Advisor's name
-    advisorname = Mapped[str]: mapped_column(String(90))
-    
-    def __repr__(self) -> str:
-        return f"Students({banner_id = {self.id!r}, fname =self.fname!r})"
-
-class advisorChair(db_extend.Model):
-    banner_id = : Mapped[int] = mapped_column(ForeignKey("users.banner_id"),
-    primary_key = True)
-    # firstname
-    fname = Mapped[str]: mapped_column(String(40))
-    # Last name
-    lname = Mapped[str]: mapped_column(String(40))
+    lname: Mapped[str]= mapped_column(String(40))
     # Department area Concentration
-    depart_concen = Mapped[str]: mapped_column(String(40))
+    depart_concen: Mapped[str]= mapped_column(String(40))
     
     def __repr__(self) -> str:
-        return f"advisorChair({banner_id = {self.id!r}, fname =self.fname!r})"
+        return f"advisorChair(banner_id = {self.id!r}, fname ={self.fname!r})"
+"""
 
+Base.metadata.create_all(bind = engine)
 
-start_student_db(db_conn = db_extend, app = app)
+start_student_db(db_conn = engine)
 
 
 @app.route("/")

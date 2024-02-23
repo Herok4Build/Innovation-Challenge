@@ -1,0 +1,19 @@
+.blue-square {
+    background-color: #73c8e1;
+}
+
+body 
+{
+    background-image: linear-gradient(to right, cyan, #3bb1d9);
+}
+
+.text-alignment
+{
+    text-align: center;
+}
+
+.button-color
+{
+    background-color: purple;
+    color: white;
+}
