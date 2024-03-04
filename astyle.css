@@ -1,10 +1,41 @@
+/*
+Extending some CSS from styles.css. Cannot extend it all as there
+is an issue with the styling not showing up properly.
+*/
+
 .blue-square {
     background-color: #73c8e1;
 }
 
 body 
 {
-    background-image: linear-gradient(to right, cyan, #3bb1d9);
+    background-image: linear-gradient(90deg, #cdffd8, #94b9ff);
+    /*background-color: navy;*/
+}
+
+.forms-container{
+    position: absolute;
+    width: 100%;
+    height:500px;
+    top: 0;
+    left: 0;
+}
+
+form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 2rem;
+    overflow: hidden;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    transition: 0.2s 0.7s ease-in-out;
+}
+
+.form-control
+{
+    width: 300%;
 }
 
 .text-alignment
@@ -12,8 +43,35 @@ body
     text-align: center;
 }
 
+.extra-round
+{
+    border-radius: 25%;
+}
+
 .button-color
 {
     background-color: purple;
     color: white;
 }
+
+.plain-link
+{
+    color: white;
+    font-weight: bold;
+}
+
+
+
+
+
+
+.square-teal
+{
+    border-radius: 10%;
+    background-color: aquamarine;
+}
+
+
+
+
+

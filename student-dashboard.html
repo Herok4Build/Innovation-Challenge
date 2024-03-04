@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+    <head>
+        <title>
+            Aggie G Path
+        </title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+            <link rel="stylesheet" href="astyle.css">
+        <!--<link rel="stylesheet" href="{{url_for('static', filename='css/astyle.css')}}">-->
+            <!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">AGGIE G PATH</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Student Profile <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">POS</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Resources
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Graduate Forms</a>
+                    <a class="dropdown-item" href="#">Miscellaneous Documents</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Contact</a>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+              </ul>
+              <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              </form>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-2 blue-square extra-round">
+                    <div>
+                        <a href="#" class="plain-link">Student Profile</a>
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2 blue-square extra-round">
+                    <div>
+                        <a href="#" class="plain-link">Plan of Study</a>
+                    </div>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-2 blue-square extra-round">
+                    <div>
+                        <a href="#" class="plain-link">Milestones</a>
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2 blue-square extra-round">
+                    <div>
+                        <a href="#" class="plain-link">Alerts</a>
+                    </div>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <h2>My Progress</h2>
+                    <canvas id="progress-chart"></canvas>
+                    <canvas id="completion-chart"></canvas>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <h2>My Portfolio</h2>
+                    <h5>The GPA:</h5>
+                    <h4 id="gpa"></h4>
+                    <h5>Class Schedule</h5>
+                    <h4><a href = "#">Click to View</a></h4>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3">
+                    <h2>My Contacts</h2>
+                </div>
+                <div class="col-sm-7"></div>
+            </div>
+            <br>
+        </div>
+        
+        <script>
+            /* 
+            Extending the Chart.js documentation.
+            */
+            function total_credits(status = "ms")  
+            {
+                if (status == "ms")
+                {
+                    return(42)
+                }
+                else
+                {
+                    return(64)
+                }
+            }
+            /*
+            Use a server response to get necessary information regarding milestones.
+            */
+            function completed_cred(server_response = null)
+            {
+                if(server_response == null)
+                {
+                    return(0)
+                }
+                else
+                {
+                    return(server_response)
+                }
+
+            }
+
+            function completed_milestoones_func(server_response = null)
+            {
+                if(server_response == null)
+                {
+                    return(0)
+                }
+                else
+                {
+                    return(server_response)
+                }
+
+            }
+
+            function total_milestoones_func(server_response = null)
+            {
+                /*
+                Get information of indifvidual students milestone requirements from database.
+                That or hardcode the general total milestones needed for completion of 
+                degree.
+                */
+                if(server_response == null)
+                {
+                    return(10)
+                }
+                else
+                {
+                    return(server_response)
+                }
+
+            }
+
+            function calc_gpa(server_response = null)
+            {
+                if(server_response == null)
+                {
+                    /*
+                    Default 4.0 GPA
+                    */
+                   return(4.0)
+                }
+                else
+                {
+                    /*
+                    Do some calculations then re
+                    */
+                    calculate_gpa = null
+                    return(calculate_gpa)
+                }
+            }
+
+           var completed_credits = completed_cred()
+           var remaining_credits = total_credits() - completed_credits
+
+           var milestone_completed = completed_milestoones_func()
+           var remaining_milestones = total_milestoones_func() - milestone_completed
+           /* 
+           Data for the progress chart to use with Chart.js
+           */
+          
+            var requirements_data = {labels: [
+                                'Complete',
+                                'Remaining',
+                                ],
+                            datasets: [{
+                            label: 'Milestone Data',
+                            data: [milestone_completed,remaining_milestones],
+                            backgroundColor: [
+                                'Blue',
+                                'Gray',
+                                ],
+                            hoverOffset: 4
+                            }]}
+
+           var progress_data = {labels: [
+                                'Complete',
+                                'Remaining',
+                                ],
+                            datasets: [{
+                            label: 'Progress Data',
+                            data: [completed_credits,remaining_credits],
+                            backgroundColor: [
+                                'Blue',
+                                'Gray',
+                                ],
+                            hoverOffset: 4
+                            }]}
+            /*
+            Building the charts
+            */
+            var config_progress = {
+                    type: 'doughnut',
+                    data: progress_data,
+                    options: {
+                    title: {
+                        display: true,
+                        text: "My Progress"
+                        }
+                    }
+                
+            };
+
+            var config_completion = {
+                    type: 'doughnut',
+                    data: requirements_data,
+                    options: {
+                    title: {
+                        display: true,
+                        text: "Program Completion"
+                        }
+                    }
+                
+            };
+
+            /*
+            Produce the Plots
+            */
+            new Chart("progress-chart",config_progress)
+            
+            new Chart("completion-chart",config_completion)
+
+            document.getElementById("gpa").innerHTML = Number.parseFloat(calc_gpa()).toFixed(2);
+        </script>
+    </body>
+</html>
