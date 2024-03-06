@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, session
 from flask import render_template
 from typing import List
 from typing import Optional
@@ -15,12 +15,20 @@ from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
 import os
+import matplotlib.pyplot as plt
+import numpy as np
 
 from sqlalchemy import create_engine
 engine = create_engine("sqlite://", echo=True)
 metadat = MetaData()
 
 db_sess = scoped_session(sessionmaker(autocommit = False,autoflush = False, bind = engine))
+
+def total_credits(prev_status = "MS"):
+    if prev_status == "MS":
+        return(42)
+    else:
+        return(65)
 
 class Base(DeclarativeBase):
     pass
@@ -163,3 +171,25 @@ def login():
     email_var = request.form["useremail"]
     pass_var = request.form["userpass"]
     return email_var, pass_var
+
+@app.route("/student-dash")
+def dashboard():
+    if session is not None and "banner_id" in session:
+        student_id = session["banner_id"]
+        # Get some information form the database
+    else:
+        student_id = None
+        fig, ax = plt.subplots(figsize=(4,3), subplot_kw=dict(aspect="equal"))
+        completed_credits = 0
+        remaining_credits = total_credits() - completed_credits
+        
+
+    return render_template("student-dashboard.html")
+    
+
+@app.route("/existing-user")
+def user_exists():
+    return render_template("existing-users.html")
+
+
+
