@@ -74,7 +74,7 @@ def create_credit_chart(completed_cred = 0, total_credits = 42):
     # Include the data and establish labels
     wedge_elem, text_elem, autotexts = axis.pie(x = credits_data, colors = chart_colors, autopct = lambda pct: percent_disp(pct,credits_data))
     # Draw a circle to make a donut
-    axis.pie(x = [100], colors = ["white"], radius =0.80)
+    axis.pie(x = [100], colors = ["white"], radius =0.85)
     # Establish the legend for the plot
     axis.legend(wedge_elem, ["completed", "remaining"], title="Credits",loc = "center left", bbox_to_anchor = (1,0,0.5,1))
     # Store to memory and save to get around saving as a file
@@ -96,15 +96,24 @@ def create_completion_chart(completed_miles = 0, total_miles = 10):
     chart_colors = ["#0000FF", "#808080"]
     credit_fig = Figure()
     axis = credit_fig.add_subplot(1,1,1)
+    # Set the title
+    axis.set_title("My Completion")
     credit_fig.subplots_adjust(right=0.6)
-    wedge_elem, text_elem = axis.pie(x = credits_data,autopct = lambda pct: percent_disp(pct,miles_data), colors = chart_colors, title="My Completion")
-    axis.pie(x = [100], colors = ["white"], radius =0.80)
-    axis.legend(wedge_elem, ["completed", "remaining"], title="Credits",loc = "center left", bbox_to_anchor = (1,0,0.5,1))
+    wedge_elem, text_elem, auto_texts = axis.pie(x = miles_data,autopct = lambda pct: percent_disp(pct,miles_data), colors = chart_colors)
+    axis.pie(x = [100], colors = ["white"], radius =0.85)
+    axis.legend(wedge_elem, ["completed milestones", "remaining milestones"], title="Degree Progress",loc = "center left", bbox_to_anchor = (1,0,0.5,1))
     outputted_info = io.BytesIO()
     credit_fig.savefig(outputted_info,format="png")
     encoded_chart = base64.b64encode(outputted_info.getvalue())
     decode_chart = encoded_chart.decode("utf-8")
     return(decode_chart)
+
+# Calculate GPA
+def calc_gpa(numeric_weights = 0):
+    calculated_gpa = np.mean(numeric_weights)
+    return(calculated_gpa)
+
+
 
 class Base(DeclarativeBase):
     pass
@@ -259,10 +268,12 @@ def dashboard():
         student_id = None
         credits_figure = create_credit_chart()
         milestones_figure = create_completion_chart()
+        gpa_value = calc_gpa()
+
         # FigureCanvas(credits_figure).print_png(outputted_info)
         #credits_chart = Response(outputted_info.getvalue(), mimetype = "image/png")
 
-    return render_template("student-dashboard.html", credits_plot =credits_figure, milestones_plot = milestones_figure)
+    return render_template("student-dashboard.html", credits_plot =credits_figure, milestones_plot = milestones_figure, gpa = gpa_value)
     
 
 @app.route("/existing-user")

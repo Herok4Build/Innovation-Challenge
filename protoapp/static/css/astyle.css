@@ -3,6 +3,13 @@ Extending some CSS from styles.css. Cannot extend it all as there
 is an issue with the styling not showing up properly.
 */
 
+.crop-plots
+{
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+}
+
 .blue-square {
     background-color: #73c8e1;
 }

@@ -2,35 +2,25 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-2 blue-square extra-round">
-            <div>
-                <a href="#" class="plain-link">Student Profile</a>
-            </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3">
+            <button class="btn btn-primary" type="submit"><a href="#" class="plain-link">Student Profile</a></button>
         </div>
         <div class="col-sm-2"></div>
-        <div class="col-sm-2 blue-square extra-round">
-            <div>
-                <a href="#" class="plain-link">Plan of Study</a>
-            </div>
+        <div class="col-sm-3">
+            <button class="btn btn-primary" type="submit"><a href="#" class="plain-link">Plan of Study</a></button>
         </div>
-        <div class="col-sm-3"></div>
     </div>
     <br>
     <div class="row">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-2 blue-square extra-round">
-            <div>
-                <a href="#" class="plain-link">Milestones</a>
-            </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3">
+                <button class="btn btn-primary" type="submit"><a href="#" class="plain-link">Milestones</a></button>
         </div>
         <div class="col-sm-2"></div>
-        <div class="col-sm-2 blue-square extra-round">
-            <div>
-                <a href="#" class="plain-link">Alerts</a>
-            </div>
+        <div class="col-sm-3">
+                <button class="btn btn-primary" type="submit"><a href="#" class="plain-link">Alerts</a></button>
         </div>
-        <div class="col-sm-3"></div>
     </div>
     <br>
     <div class="row">
@@ -38,9 +28,16 @@
         <div class="col-sm-6">
             <h2>My Progress</h2>
             <div class="row">
-                <canvas id="progress-chart"></canvas>
-                <img id="prog-chart" src="data:image/png;base64,{{ credits_plot }}">
-                <canvas id="completion-chart"></canvas>
+                <!--<canvas id="progress-chart"></canvas>-->
+                <div class="col-sm-3">
+                <img id="prog-chart" class="crop-plots" src="data:image/png;base64,{{ credits_plot }}">
+                </div>
+                <div class = "col-sm-4">
+                </div>
+                <div class="col-sm-3">
+                    <img id="comp-chart" class="crop-plots" src="data:image/png;base64,{{ milestones_plot }}">
+                </div>
+                <!--<canvas id="completion-chart"></canvas>-->
             </div>
         </div>
         <div class="col-sm-4"></div>
@@ -51,11 +48,16 @@
         <div class="col-sm-6">
             <h2>My Portfolio</h2>
             <div class="row">
-                
+                <div class="col-sm-3">
                 <h5>The GPA:</h5>
-                <h4 id="gpa"></h4>
-                <h5>Class Schedule</h5>
+                <h4 id="gpa"> {{gpa}}</h4>
+                </div>
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-3">
+                <h5>Class Schedule:</h5>
                 <h4><a href = "#">Click to View</a></h4>
+            </div>
             </div>
         </div>
         <div class="col-sm-4"></div>
